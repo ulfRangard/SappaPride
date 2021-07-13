@@ -1,0 +1,29 @@
+FB50 - Sachkontenbeleg
+KS02 - Kostenstelle ändern
+
+S_ALR_87012289 - Beleg-Kompaktjournal
+
+FBD1 - Dauerbuchung erfassen
+F.15 - ABAP/4 Report: Dauerbuchung listen
+F.14 - ABAP/4 Report: Dauerbuchung ausführen
+SM35 - Batchinput-Mappe
+SHDB - Batchinput-Recorder
+
+FI01 - Bank anlegen
+FI02 - Bank ändern
+FI03 - Bank anzeigen
+RFBKVZ00 (Reportcode) - Bankenverzeichnis
+RFBKVZ00 (Reportcode) - Debitorenverzeichnis
+
+Debitoren
+----------
+
+FB70 - Debitoren nach Buchungskreis
+FD03 - Debitoren anzeigen
+FLCU1 - Rolle (FLCU00) Debitor
+
+ABAP
+----
+
+SE80 - Workbench
+ST22 - Laufzeitfehler anzeigen
