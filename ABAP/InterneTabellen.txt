@@ -1,0 +1,43 @@
+REPORT Z262103_EREIGNISSE.
+
+* PBO - Process before Output
+* --> Initialization
+* www.berater-wiki.de/Reporting-Ereignisse
+
+* PAI - Process after input
+
+DATA: lv_car TYPE sflight-carrid,
+     lt_sflight TYPE TABLE OF sflight,
+     ls_sflight TYPE sflight.
+
+SELECT-OPTIONS so_car FOR lv_car.
+
+* PAI zum Selektionsbild
+AT SELECTION-SCREEN.
+  SELECT SINGLE carrid FROM sflight INTO ls_sflight-carrid
+    WHERE carrid IN so_car.
+  IF sy-subrc <> 0.
+    MESSAGE 'keinen Satz gefunden' TYPE 'E'.
+  ENDIF.
+
+START-OF-SELECTION.
+   SELECT * FROM sflight INTO TABLE lt_sflight
+     WHERE carrid IN so_car.
+
+   LOOP AT lt_sflight INTO ls_sflight.
+     WRITE / ls_sflight-carrid.
+   ENDLOOP.
+
+* PBO des Selektionsbildes
+INITIALIZATION.
+    so_car-sign = 'I'.
+    so_car-option = 'BT'.
+    so_car-low = 'LH'.
+    so_car-high = 'UA'.
+    APPEND so_car.
+
+    so_car-sign = 'I'.
+    so_car-option = 'EQ'.
+    so_car-low = 'AA'.
+    CLEAR so_car-high.
+    APPEND so_car.

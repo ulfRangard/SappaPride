@@ -1,0 +1,108 @@
+*&---------------------------------------------------------------------*
+*& Report Z262103_TABELLEN
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT Z262103_TABELLEN.
+
+TYPES: BEGIN OF lty_tab,
+  x(10),
+  a TYPE i,
+  b TYPE i,
+  c TYPE i,
+  END OF lty_tab.
+
+DATA: BEGIN OF ls_tab,
+  x(10),
+  a TYPE i,
+  b TYPE i,
+  c TYPE i,
+  END OF ls_tab.
+
+DATA: itab TYPE STANDARD TABLE OF lty_tab WITH DEFAULT KEY,
+      itab1 LIKE SORTED TABLE OF ls_tab WITH UNIQUE KEY x,
+      itab2 LIKE HASHED TABLE OF ls_tab WITH UNIQUE KEY x.
+
+ls_tab-x = 'aaa'.
+ls_tab-a = 100.
+ls_tab-b = 200.
+ls_tab-c = 300.
+
+APPEND ls_tab TO itab.
+CLEAR ls_tab.
+
+ls_tab-x = 'bbb'.
+ls_tab-a = 400.
+ls_tab-b = 500.
+ls_tab-c = 600.
+
+APPEND ls_tab TO itab.
+CLEAR ls_tab.
+
+ls_tab-x = 'ccc'.
+ls_tab-a = 700.
+ls_tab-b = 800.
+ls_tab-c = 900.
+
+APPEND ls_tab TO itab.
+CLEAR ls_tab.
+
+ls_tab-x = 'abc'.
+ls_tab-a = 700.
+ls_tab-b = 800.
+ls_tab-c = 900.
+
+INSERT ls_tab INTO TABLE itab. " weil sorted table
+CLEAR ls_tab.
+
+APPEND ls_tab TO itab.
+CLEAR ls_tab.
+
+ls_tab-x = 'abc'.
+ls_tab-a = 77.
+ls_tab-b = 88.
+ls_tab-c = 99.
+
+MODIFY TABLE itab FROM ls_tab. " Wert mit Schlüssel x ändern
+CLEAR ls_tab.
+
+LOOP AT itab INTO ls_tab.
+  WRITE: / ls_tab-x,
+            ls_tab-a,
+            ls_tab-b,
+            ls_tab-c.
+ENDLOOP.
+
+ULINE.
+
+READ TABLE itab INTO ls_tab WITH KEY x = 'ccc'. " Zugriff über Schlüssel
+
+  WRITE: / ls_tab-x,
+            ls_tab-a,
+            ls_tab-b,
+            ls_tab-c.
+
+READ TABLE itab INTO ls_tab INDEX 2. " Zugriff über Index
+
+ WRITE: / ls_tab-x,
+            ls_tab-a,
+            ls_tab-b,
+            ls_tab-c.
+
+ULINE.
+
+LOOP AT itab INTO ls_tab WHERE a > 100.
+  WRITE: / ls_tab-x,
+            ls_tab-a,
+            ls_tab-b,
+            ls_tab-c.
+ENDLOOP.
+
+ULINE.
+
+LOOP AT itab INTO ls_tab FROM 2 TO 4.
+  WRITE: / ls_tab-x,
+            ls_tab-a,
+            ls_tab-b,
+            ls_tab-c.
+ENDLOOP.

@@ -55,4 +55,8 @@ ELSE.
       T_TABLE        = lt_sflight ).
 ENDIF.
 
+
+* Symbole
+r_table->get_functions( )->set_all('X').
+
 r_table->display( ).
