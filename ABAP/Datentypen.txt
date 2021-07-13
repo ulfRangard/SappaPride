@@ -1,0 +1,84 @@
+*&---------------------------------------------------------------------*
+*& Report Z262103_DATENOBJEKTE
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT Z262103_DATENOBJEKTE.
+
+* 1. Elementare Datenobjekte (= Variable)
+* 1.1. auf Basis vordefinierter Datentypen
+
+DATA counter TYPE i.
+counter = 2.
+WRITE: / 'Counter:',counter.
+
+DATA ekpreis TYPE p DECIMALS 2.
+ekpreis = '125.99'.
+WRITE: / 'EkPreis:',ekpreis.
+
+DATA text1(5) TYPE c.
+* DATA text1(5).
+* DATA text1 TYPE c LENGTH 5.
+DATA char1.
+text1 = 'ABAP'. " schneidet bei mehr als 5 Zeichen ab
+
+WRITE: / 'Text1:', text1.
+
+DATA text2 TYPE string.
+text2 = 'ABAP'.
+WRITE: / 'text2:', text2.
+
+DATA dat TYPE d. " intern JJJJMMTT
+dat = '20210720'.
+WRITE: / 'Datum:', dat.
+WRITE: / 'Datum:', dat DD/MM/YYYY.
+
+DATA tage TYPE i.
+tage = dat - sy-datum. " Systemdatum
+WRITE / 'Noch ' && tage && ' Tage bis zur Klausur.'.
+
+DATA blz(8) TYPE n. " numerischer Text
+
+* 1.2. Elementare Datenobjekte auf Basis programmlokaler Datentypen
+TYPES na(30) TYPE c.
+
+DATA vorname TYPE na.
+DATA nachname TYPE na.
+DATA ortsname LIKE nachname. " Kopie der Definition von nachname
+
+vorname = 'Max'.
+nachname = 'Mustermann'.
+ortsname = 'Musterstadt'.
+WRITE: / 'vorname:', vorname.
+
+* 1.3. Elementare DO auf Basis von Dictionary-Elementen (DDIC - DataDictionary)
+DATA fg TYPE s_carr_id. " Datenelement eines Feldes
+DATA fg2 TYPE spfli-carrid. " Feld als Typ
+
+* 2. Eindimensionale Datenobjekte (Tabellenzeilen/rows/Strukturen)
+* 2.1. auf Basis eines programmlokalen Typs
+
+TYPES: BEGIN OF ztyp,
+  carrid TYPE spfli-carrid,
+  connid TYPE spfli-connid,
+  cityfrom TYPE spfli-cityfrom,
+  cityto TYPE spfli-cityto,
+  END OF ztyp.
+
+DATA wa_spfli TYPE ztyp.
+
+SELECT carrid connid cityfrom cityto FROM spfli INTO wa_spfli.
+  WRITE: / wa_spfli-carrid, wa_spfli-connid, wa_spfli-cityfrom, wa_spfli-cityto.
+ENDSELECT.
+
+* 2.2. auf Basis DDIC-Elemente
+DATA wa_spfli2 TYPE spfli. " Tabelle fungiert als Zeilentyp
+
+* 3. Zweidimensionale Datenobjekte (interne Tabelle (array) )
+* 3.1. auf Basis programmlokaler Typen
+
+DATA it_spfli3 TYPE TABLE OF ztyp.
+
+* 3.2. auf Basis DDIC-Elemente
+DATA it_spfli4 TYPE TABLE OF spfli. " 
+DATA it_sflight TYPE WD_SFLIGHT_TAB. " Tabellentyp

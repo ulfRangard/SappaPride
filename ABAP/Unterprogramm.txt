@@ -1,0 +1,35 @@
+REPORT Z262103_UNTERPROGRAMM.
+
+DATA: a TYPE i VALUE 10,
+      b TYPE i VALUE 20,
+      c TYPE i VALUE 30,
+      d TYPE i VALUE 40.
+
+PERFORM form_xyz
+  USING a " Aktualparameter
+        d
+  CHANGING b
+           c.
+
+ULINE.
+
+WRITE: 'Hauptprogramm', a, b, c, d.
+
+FORM form_xyz USING VALUE(f1) TYPE i " Call-by-Value
+                    fd                              " Formalparameter
+              CHANGING VALUE(f2) TYPE i " call-by-Value&Result
+                        f3 TYPE i. " call-by-ref
+    DATA: f4 TYPE i VALUE 888,
+          a TYPE i VALUE 777. " Verschattung globale Variable
+
+    WRITE: 'Unterprogramm', f1, f2, f3, f4, a, b.
+
+    f1 = 100.
+    f2 = 200.
+    f3 = 300.
+    fd = 400.
+
+    b = 999.
+
+
+ENDFORM.

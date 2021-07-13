@@ -1,0 +1,9 @@
+WRITE: / sy-mandt,  " mandant
+        sy-uname,    " name aktueller Benutzer
+        sy-langu,    " Anmeldesprache
+        sy-datum,     " Systemdatum
+        sy-uzeit,     " Systemzeit
+        sy-tcode,     " Transaktionscode
+        sy-repid,     " Programmname
+        sy-index,     " Laufvariable Schleife
+        sy-subrc      " DB-Abfrage Code (0 = Erfolgreich)

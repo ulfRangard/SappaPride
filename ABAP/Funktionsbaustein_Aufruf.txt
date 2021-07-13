@@ -1,0 +1,34 @@
+*&---------------------------------------------------------------------*
+*& Report Z262103_FUNKTIONSBAUSTEIN
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT Z262103_FUNKTIONSBAUSTEIN.
+
+DATA: lt_sflight TYPE TABLE OF sflight,
+      ls_sflight TYPE sflight.
+
+PARAMETERS: pa_carr TYPE sflight-carrid,
+            pa_conn TYPE sflight-connid.
+
+CALL FUNCTION 'Z_262103_FUNKTIONSBAUSTEIN'
+  EXPORTING
+    IV_CARRID       = pa_carr
+    IV_CONNID       = pa_conn
+   IMPORTING
+    EV_FLUEGE       = lt_sflight
+   EXCEPTIONS
+    NOTFOUND        = 1
+    OTHERS          = 2
+          .
+IF SY-SUBRC <> 0.
+  MESSAGE 'Lesefehler' TYPE 'X'.
+ENDIF.
+
+LOOP AT lt_sflight INTO ls_sflight.
+  WRITE: / ls_sflight-carrid,
+            ls_sflight-connid,
+            ls_sflight-fldate,
+            ls_sflight-price,
+            ls_sflight-currency.
+ENDLOOP.

@@ -1,0 +1,61 @@
+*&---------------------------------------------------------------------*
+*& Report Z262103_SCHLEIFEN
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT Z262103_SCHLEIFEN.
+
+DATA: lv_zaehler TYPE i,
+      ls_scarr TYPE scarr,
+      lt_scarr TYPE TABLE OF scarr.
+
+DO.
+  lv_zaehler = lv_zaehler + 1.
+
+    IF lv_zaehler > 10.
+    EXIT.
+  ENDIF.
+
+  WRITE: /10 lv_zaehler, 'FARBE' COLOR = lv_zaehler RIGHT-JUSTIFIED.
+
+ENDDO.
+
+ULINE.
+
+CLEAR lv_zaehler.
+
+DO 10 TIMES.
+  WRITE: /10 sy-index, 'FARBE' COLOR = sy-index RIGHT-JUSTIFIED.
+ENDDO.
+
+WRITE sy-index.
+
+ULINE.
+
+WHILE sy-index < 11.
+  WRITE: /10 sy-index, 'FARBE' COLOR = sy-index RIGHT-JUSTIFIED.
+ENDWHILE.
+
+ULINE.
+
+* setzt sehr viel Last auf die DB...
+*SELECT * FROM scarr INTO ls_scarr.
+*WRITE: / ls_SCARR-CARRID,
+*       ls_SCARR-CARRNAME,
+*       ls_SCARR-CURRCODE,
+*       (50) ls_SCARR-URL.
+*
+*ENDSELECT.
+
+SELECT * FROM scarr INTO TABLE lt_scarr WHERE carrid = 'AA' or carrid = 'UA'.
+
+IF sy-subrc <> 0.
+  WRITE 'Satz nicht gefunden'.
+ELSE.
+  LOOP AT lt_scarr INTO ls_scarr.
+       WRITE: / ls_SCARR-CARRID,
+       ls_SCARR-CARRNAME,
+       ls_SCARR-CURRCODE,
+       (50) ls_SCARR-URL.
+  ENDLOOP.
+ENDIF.
