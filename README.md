@@ -2,7 +2,7 @@
 
 SAP guys?
 
-This repository is SAPposed to be a guide for the SAP exam.
+This repository is SAPposed to SAPply all your needs.
 
 Pls like and SAPscribe
 I appreciate your SAPport
