@@ -1,0 +1,58 @@
+*&---------------------------------------------------------------------*
+*& Report Z262103_ALV
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT Z262103_ALV.
+
+DATA: lt_sflight TYPE TABLE OF sflight,
+      r_table TYPE REF TO cl_salv_table.
+
+* SELECTION-SCREEN Zwischenüberschriften
+SELECTION-SCREEN BEGIN OF BLOCK daten WITH FRAME TITLE text-001.
+  PARAMETERS: pa_carr TYPE sflight-carrid,
+              pa_conn TYPE sflight-connid.
+SELECTION-SCREEN END OF BLOCK daten.
+
+
+SELECTION-SCREEN BEGIN OF BLOCK liste WITH FRAME TITLE text-002.
+  PARAMETERS: l_alv1 RADIOBUTTON GROUP alv DEFAULT 'X',
+              l_alv2 RADIOBUTTON GROUP alv.
+SELECTION-SCREEN END OF BLOCK liste.
+
+START-OF-SELECTION. " Ereignisblock von ABAP
+
+CALL FUNCTION 'Z_262103_FUNKTIONSBAUSTEIN'
+  EXPORTING
+    IV_CARRID       = pa_carr
+    IV_CONNID       = pa_conn
+  IMPORTING
+    EV_FLUEGE       = lt_sflight
+  EXCEPTIONS
+    NOTFOUND        = 1
+    OTHERS          = 2
+          .
+IF SY-SUBRC <> 0.
+* Implement suitable error handling here
+ENDIF.
+
+IF l_alv1 eq 'X'.
+  CALL METHOD CL_SALV_TABLE=>FACTORY
+     EXPORTING
+       LIST_DISPLAY   = IF_SALV_C_BOOL_SAP=>FALSE
+     IMPORTING
+       R_SALV_TABLE   = r_table
+    CHANGING
+      T_TABLE        = lt_sflight
+      .
+ELSE.
+  cl_salv_table=>factory(
+    EXPORTING
+       LIST_DISPLAY   = IF_SALV_C_BOOL_SAP=>TRUE
+     IMPORTING
+       R_SALV_TABLE   = r_table
+    CHANGING
+      T_TABLE        = lt_sflight ).
+ENDIF.
+
+r_table->display( ).
